@@ -21,3 +21,7 @@ services:
 
       - /etc/letsencrypt/live/displayify.ru/privkey.pem:/etc/letsencrypt/live/displayify.ru/privkey.pem
 
+      - /etc/nginx/pki/server.crt:/etc/nginx/pki/server.crt
+
+      - /etc/nginx/pki/server.key:/etc/nginx/pki/server.key
+

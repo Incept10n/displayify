@@ -63,22 +63,17 @@ authInternalUsers:
   # Default unprivileged user.
   # Username. 'any' means any user, including anonymous ones.
 - user: any
-  # Password. Not used in case of 'any' user.
   pass:
-  # IPs or networks allowed to use this user. An empty list means any IP.
   ips: []
-  # Permissions.
   permissions:
     # Available actions are: publish, read, playback, api, metrics, pprof.
-  - action: publish
-    # Paths can be set to further restrict access to a specific path.
-    # An empty path means any path.
-    # Regular expressions can be used by using a tilde as prefix.
-    path:
   - action: read
-    path:
-  - action: playback
-    path:
+
+- user: {{ RTMP_USER }}
+  pass: "{{ RTMP_PASS }}"
+  ips: []
+  permissions:
+  - action: publish
 
   # Default administrator.
   # This allows to use API, metrics and PPROF without authentication,
@@ -265,9 +260,9 @@ rtspTransports: [udp, multicast, tcp]
 # Available values are "no", "strict", "optional".
 rtspEncryption: "no"
 # Address of the TCP/RTSP listener. This is needed only when encryption is "no" or "optional".
-rtspAddress: :8554
+rtspAddress: 127.0.0.1:8554
 # Address of the TCP/RTSPS listener. This is needed only when encryption is "strict" or "optional".
-rtspsAddress: :8322
+rtspsAddress: 127.0.0.1:8322
 # Address of the UDP/RTP listener. This is needed only when "udp" is in rtspTransports and encryption is "no" or "optional".
 rtpAddress: :8000
 # Address of the UDP/RTCP listener. This is needed only when "udp" is in rtspTransports and encryption is "no" or "optional".
@@ -290,9 +285,9 @@ multicastSRTCPPort: 8007
 # This can be generated with:
 # openssl genrsa -out server.key 2048
 # openssl req -new -x509 -sha256 -key server.key -out server.crt -days 3650
-rtspServerKey: server.key
+rtspServerKey: /etc/nginx/pki/server.key
 # Path to the server certificate. This is needed only when encryption is "strict" or "optional".
-rtspServerCert: server.crt
+rtspServerCert: /etc/nginx/pki/server.crt
 # Authentication methods. Available are "basic" and "digest".
 # "digest" doesn't provide any additional security and is available for compatibility only.
 rtspAuthMethods: [basic]
@@ -304,7 +299,7 @@ rtspAuthMethods: [basic]
 rtmp: true
 # Use the secure protocol variant (RTMP).
 # Available values are "no", "strict", "optional".
-rtmpEncryption: "no"
+rtmpEncryption: "strict"
 # Address of the RTMP listener. This is needed only when encryption is "no" or "optional".
 rtmpAddress: :1935
 # Address of the RTMPS listener. This is needed only when encryption is "strict" or "optional".
@@ -313,15 +308,17 @@ rtmpsAddress: :1936
 # This can be generated with:
 # openssl genrsa -out server.key 2048
 # openssl req -new -x509 -sha256 -key server.key -out server.crt -days 3650
-rtmpServerKey: server.key
+
+rtmpServerKey: /etc/nginx/pki/server.key
 # Path to the server certificate. This is needed only when encryption is "strict" or "optional".
-rtmpServerCert: server.crt
+rtmpServerCert: /etc/nginx/pki/server.crt 
+
 
 ###############################################
 # Global settings -> HLS server
 
 # Enable reading streams with the HLS protocol.
-hls: true
+hls: false
 # Address of the HLS listener.
 hlsAddress: :8888
 # Enable HTTPS on the HLS server.
@@ -391,9 +388,15 @@ webrtcEncryption: true
 # This can be generated with:
 # openssl genrsa -out server.key 2048
 # openssl req -new -x509 -sha256 -key server.key -out server.crt -days 3650
-webrtcServerKey: /etc/letsencrypt/live/displayify.ru/privkey.pem
+
+#webrtcServerKey: /etc/letsencrypt/live/displayify.ru/privkey.pem
+webrtcServerKey: /etc/nginx/pki/server.key
+
 # Path to the server certificate.
-webrtcServerCert: /etc/letsencrypt/live/displayify.ru/fullchain.pem
+
+#webrtcServerCert: /etc/letsencrypt/live/displayify.ru/fullchain.pem
+webrtcServerCert: /etc/nginx/pki/server.crt
+
 # Allowed CORS origins.
 # Supports wildcards: ['http://*.example.com']
 webrtcAllowOrigins: ['*']
@@ -438,7 +441,7 @@ webrtcTrackGatherTimeout: 2s
 # Global settings -> SRT server
 
 # Enable publishing and reading streams with the SRT protocol.
-srt: true
+srt: false
 # Address of the SRT listener.
 srtAddress: :8890
 
@@ -807,7 +810,7 @@ paths:
   # incept1on
   live/incept1on:
     source: publisher
-    runOnReady: ffmpeg -re -fflags +genpts+igndts -rtsp_flags prefer_tcp -buffer_size 8192k -i rtsp://localhost:8554/live/incept1on -c:v copy -c:a libopus -b:a 256k -ar 48000 -ac 2 -application lowdelay -frame_duration 20 -packet_loss 10 -f rtsp -rtsp_transport tcp -muxdelay 0.1 -muxpreload 0 rtsp://localhost:8554/live/incept1on_stream
+    runOnReady: "ffmpeg -re -fflags +genpts+igndts -rtsp_flags prefer_tcp -buffer_size 8192k -i rtsp://localhost:8554/live/incept1on -c:v copy -c:a libopus -b:a 256k -ar 48000 -ac 2 -application lowdelay -frame_duration 20 -packet_loss 10 -f rtsp -rtsp_transport tcp -muxdelay 0.1 -muxpreload 0 rtsp://{{ RTMP_USER }}:{{ RTMP_PASS }}@localhost:8554/live/incept1on_stream"
     runOnReadyRestart: true
     runOnNotReady: pkill -f "ffmpeg.*rtsp://localhost:8554/live/incept1on"
 
