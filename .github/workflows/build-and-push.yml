@@ -39,7 +39,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: back
+          tags: incept1on/displayify:back
           labels: ${{ steps.meta.outputs.labels }}
           provenance: false
 
@@ -74,6 +74,6 @@ jobs:
           context: .
           file: ./front/Dockerfile
           push: true
-          tags: front
+          tags: incept1on/displayify:front
           labels: ${{ steps.meta.outputs.labels }}
           provenance: false
