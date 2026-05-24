@@ -40,7 +40,8 @@ RUN chmod +x /app/mediamtx
 # 1935 - RTMP (опционально)
 # 8888 - HLS (опционально)
 # 9997 - API управления (опционально)
-EXPOSE 8554 8889 8189/udp 1935 8888 9997
+#EXPOSE 8554 8889 8189/udp 1935 8888 9997
+EXPOSE 8889 8189/udp 1935
 
 # Точка входа - запускаем MediaMTX
 ENTRYPOINT ["/app/mediamtx"]
