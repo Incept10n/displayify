@@ -9,7 +9,7 @@ on:
 
 jobs:
   build-and-push-back:
-    name: Push Docker image to Docker Hub
+    name: Push back Docker image to Docker Hub
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -44,7 +44,7 @@ jobs:
           provenance: false
 
   build-and-push-front:
-    name: Push Docker image to Docker Hub
+    name: Push front Docker image to Docker Hub
     runs-on: ubuntu-latest
     permissions:
       packages: write
