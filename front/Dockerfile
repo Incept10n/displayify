@@ -12,7 +12,7 @@ FROM nginx:1.31
 
 RUN rm /etc/nginx/conf.d/default.conf
 
-COPY nginx/displayify.conf /etc/nginx/conf.d/displayify.conf
+COPY nginx/conf.d/displayify.conf /etc/nginx/conf.d/displayify.conf
 
 COPY --from=builder /app/dist /var/www/html
 
