@@ -27,6 +27,8 @@ WORKDIR /app
 # Копируем локальный бинарный файл MediaMTX в контейнер
 COPY mediamtx /app/mediamtx
 
+COPY mediamtx.yml.j2 /app/mediamtx.yml.j2
+
 # Делаем бинарник исполняемым
 RUN chmod +x /app/mediamtx
 
