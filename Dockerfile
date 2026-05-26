@@ -33,4 +33,4 @@ RUN chmod +x /app/mediamtx
 
 EXPOSE 8889 8189/udp 1935
 
-ENTRYPOINT ["/app/mediamtx", "rendered/mediamtx.yml"]
+ENTRYPOINT ["/app/mediamtx", "/rendered/mediamtx.yml"]
