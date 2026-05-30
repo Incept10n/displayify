@@ -31,6 +31,6 @@ COPY mediamtx.yml.j2 /app/mediamtx.yml.j2
 
 RUN chmod +x /app/mediamtx
 
-EXPOSE 8889 8189/udp 1935
+EXPOSE 8889 8189/udp 1935 1936
 
 ENTRYPOINT ["/app/mediamtx", "/rendered/mediamtx.yml"]
