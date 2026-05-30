@@ -9,15 +9,15 @@ function App() {
   const streams = {
     eclipse: {
       name: 'eclipse Stream',
-      url: 'https://displayify.ru:8889/live/eclipse_stream'
+      url: 'https://displayify.inceptech.ru:8889/live/eclipse_stream'
     },
     incept1on: {
       name: 'Incept1on Stream',
-      url: 'https://displayify.ru:8889/live/incept1on_stream'
+      url: 'https://displayify.inceptech.ru:8889/live/incept1on_stream'
     },
     viox: {
       name: 'Viox Stream',
-      url: 'https://displayify.ru:8889/live/viox_stream'
+      url: 'https://displayify.inceptech.ru:8889/live/viox_stream'
     }
   };
 
